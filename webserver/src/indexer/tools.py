@@ -1,7 +1,6 @@
-import logging as log
+import logging
 from common.config import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PWD, MYSQL_DB
 import pymysql
-from indexer.logs import write_log
 
 
 def connect_mysql():
@@ -11,23 +10,59 @@ def connect_mysql():
         return conn
     except Exception as e:
         print("MYSQL ERROR: connect failed")
-        write_log(e,1)
+        logging.ERROR(e)
 
 
-def create_table_mysql(conn,cursor, table_name):
-    sql = "create table if not exists " + table_name + "(milvus_id bigint, images_id varchar(30), index ix_milvus (milvus_id), index ix_images (images_id));"
+def create_tables_mysql(conn,cursor, ids_table, movies_table):
+    ids_sql = "create table if not exists " + ids_table + "(milvus_id int, movies_id int);"
+    movies_sql = "create table if not exists " + movies_table + "(movies_id int, movies_title varchar(100), genre varchar(100));"
+    sqls = [ids_table, movies_sql]
     try:
-        cursor.execute(sql)
-        print("MYSQL create table.")
+        for sql in sqls:
+            cursor.execute(sql)
+            print("------sql:", sql)
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        write_log(e,1)
+        logging.ERROR(e)
 
 
-def search_by_milvus_ids(conn, cursor, ids, table_name):
+def load_ids_to_mysql(conn, cursor, table_name, file_name):
+    sql = "load data local infile '" + file_name + "' into table " + table_name + " fields terminated by ',';"
+    try:
+        cursor.execute(sql)
+        conn.commit()
+        print("MYSQL load ids table.")
+    except Exception as e:
+        print("MYSQL ERROR:", sql)
+        logging.ERROR(e)
+
+
+def load_movies_to_mysql(conn, cursor, table_name, file_name):
+    sql = "load data local infile '" + file_name + "' into table " + table_name + " fields terminated by '::';"
+    try:
+        cursor.execute(sql)
+        conn.commit()
+        print("MYSQL load movies table.")
+    except Exception as e:
+        print("MYSQL ERROR:", sql)
+        logging.ERROR(e)
+
+
+def join_movies_ids_mysql(milvus_table, ids_table, movies_table):
+    sql = "create table " + milvus_table + "(select ids_table.milvus_id as milvus_id, movies_table.* from " + ids_table + "," + movies_table +" where " + ids_table + ".movies_id=" + movies_table + ".movies_id;"
+    try:
+        cursor.execute(sql)
+        conn.commit()
+        print("MYSQL join table.")
+    except Exception as e:
+        print("MYSQL ERROR:", sql)
+        logging.ERROR(e)
+
+
+def search_by_milvus_ids(conn, cursor, movies_table, ids):
     str_ids = str(ids)
     str_ids = str(str_ids).replace('[','').replace(']','')
-    sql = "select images_id from " + table_name + " where milvus_id in (" + str_ids + ") order by field (milvus_id," + str_ids + ");"
+    sql = "select * from " + movies_table + " where milvus_id in (" + str_ids + ") order by field (milvus_id," + str_ids + ");"
     try:
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -36,36 +71,7 @@ def search_by_milvus_ids(conn, cursor, ids, table_name):
         return results
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        write_log(e,1)
-
-
-def search_by_image_id(conn, cursor, image_id, table_name):
-    sql = "select milvus_id from " + table_name + " where images_id = '" + image_id + "';"
-    try:
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        print("MYSQL search by image id.")
-        if len(results):
-            results = [res[0] for res in results]
-            return results
-        else:
-            return None
-    except Exception as e:
-        print("MYSQL ERROR:", sql)
-        write_log(e,1)
-
-
-
-def load_data_to_mysql(conn, cursor, table_name, file_name):
-    sql = "load data local infile '" + file_name + "' into table " + table_name + " fields terminated by ',';"
-    try:
-        cursor.execute(sql)
-        conn.commit()
-        print("MYSQL load table.")
-    except Exception as e:
-        print("MYSQL ERROR:", sql)
-        write_log(e,1)
-
+        logging.ERROR(e)
 
 
 def delete_data(conn, cursor, image_id, table_name):
@@ -78,7 +84,7 @@ def delete_data(conn, cursor, image_id, table_name):
         print("MYSQL delete data.")
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        write_log(e,1)
+        logging.ERROR(e)
 
 
 def delete_table(conn, cursor, table_name):
@@ -88,7 +94,7 @@ def delete_table(conn, cursor, table_name):
         print("MYSQL delete table.")
     except:
         print("MYSQL ERROR:", sql)
-        write_log(e,1)
+        logging.ERROR(e)
 
 
 def count_table(conn, cursor, table_name):
@@ -100,4 +106,4 @@ def count_table(conn, cursor, table_name):
         return results[0][0]
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        write_log(e,1)
+        logging.ERROR(e)

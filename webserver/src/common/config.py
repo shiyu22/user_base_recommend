@@ -7,7 +7,9 @@ VECTOR_DIMENSION = os.getenv("VECTOR_DIMENSION", 512)
 METRIC_TYPE = os.getenv("METRIC_TYPE", MetricType.IP)
 TOP_K = os.getenv("TOP_K", 100)
 
-DEFAULT_TABLE = os.getenv("DEFAULT_TABLE", "milvus_user_base_recommend")
+MILVUS_TABLE = os.getenv("MILVUS_TABLE", "milvus_user_base_recommend")
+IDS_TABLE = os.getenv("IDS_TABLE", "movies_ids")
+MOVIES_TABLE = os.getenv("MOVIES_TABLE", "movies")
 
 MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
 MYSQL_PORT = os.getenv("MYSQL_PORT", 3306)
