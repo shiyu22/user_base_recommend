@@ -114,9 +114,10 @@ def train(dataset, args):
 
                 h_item_batches.append(model.get_repr(blocks))
             h_item = torch.cat(h_item_batches, 0)
-            print("h_item", h_item)
+            np.save(args.dataset_path +'/h_item.npy', h_item.numpy())
 
-            print(evaluation.evaluate_nn(dataset, h_item, args.k, args.batch_size))
+            eva = evaluation.evaluate_nn(dataset, h_item, args.k, args.batch_size)
+            print("evaluation:", eva)
 
 if __name__ == '__main__':
     # Arguments
@@ -131,13 +132,13 @@ if __name__ == '__main__':
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--device', type=str, default='cpu')        # can also be "cuda:0"
     parser.add_argument('--num-epochs', type=int, default=1)
-    parser.add_argument('--batches-per-epoch', type=int, default=200)
+    parser.add_argument('--batches-per-epoch', type=int, default=20000)
     parser.add_argument('--num-workers', type=int, default=0)
     parser.add_argument('--lr', type=float, default=3e-5)
     parser.add_argument('-k', type=int, default=10)
     args = parser.parse_args()
 
     # Load dataset
-    with open(args.dataset_path, 'rb') as f:
+    with open(args.dataset_path + '/data.pkl', 'rb') as f:
         dataset = pickle.load(f)
     train(dataset, args)

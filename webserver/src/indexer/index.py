@@ -30,12 +30,12 @@ def create_table(client, table_name=None, dimension=VECTOR_DIMENSION,
         write_log(e,1)
 
 
-def insert_vectors(client, table_name, vectors):
+def insert_vectors(client, table_name, vectors, ids):
     if not client.has_collection(collection_name=table_name):
         log.error("collection %s not exist", table_name)
         return
     try:
-        status, ids = client.insert(collection_name=table_name, records=vectors)
+        status, ids = client.insert(collection_name=table_name, records=vectors, ids=ids)
         return status, ids
     except Exception as e:
         print("Milvus ERROR:", e)

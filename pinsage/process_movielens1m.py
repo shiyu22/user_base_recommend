@@ -88,6 +88,13 @@ genre_columns = movies.columns.drop(['movie_id', 'title', 'year'])
 movies[genre_columns] = movies[genre_columns].fillna(False).astype('bool')
 movies_categorical = movies.drop('title', axis=1)
 
+# Get the relationship between movie_id and order num
+mov_id = movies_categorical['movie_id'].values
+with open(output_path + 'mov_id.csv','w') as f:
+    for i in range(len(mov_id)):
+        line = str(i) + "," + str(mov_id[i]) + '\n'
+        f.write(line)
+
 # Build graph
 graph_builder = PandasGraphBuilder()
 graph_builder.add_entities(users, 'user_id', 'user')
@@ -149,5 +156,5 @@ dataset = {
     'item-to-user-type': 'watched-by',
     'timestamp-edge-column': 'timestamp'}
 
-with open(output_path, 'wb') as f:
+with open(output_path + 'data.pkl', 'wb') as f:
     pickle.dump(dataset, f)

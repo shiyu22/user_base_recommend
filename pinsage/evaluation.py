@@ -35,7 +35,6 @@ class LatestNNRecommender(object):
         recommended_batches = []
         user_batches = torch.arange(n_users).split(self.batch_size)
         for user_batch in user_batches:
-            print(user_batch)
             latest_item_batch = latest_items[user_batch].to(device=h_item.device)
             dist = h_item[latest_item_batch] @ h_item.t()
             # exclude items that are already interacted
@@ -62,7 +61,7 @@ def evaluate_nn(dataset, h_item, k, batch_size):
         user_ntype, item_ntype, user_to_item_etype, timestamp, batch_size)
 
     recommendations = rec_engine.recommend(g, k, None, h_item).cpu().numpy()
-    print("recommendations:", recommendations)
+    # print("recommendations:", recommendations)
     return prec(recommendations, val_matrix)
 
 if __name__ == '__main__':

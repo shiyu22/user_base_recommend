@@ -30,66 +30,7 @@ def init_conn():
     return index_client, conn, cursor
 
 
-@app.route('/addImages', methods=['POST'])
-def do_insert_images_api():
-    time1 = time.time()
-    args = reqparse.RequestParser(). \
-        add_argument('Id', type=str). \
-        add_argument('File', type=str). \
-        add_argument('Size', type=int). \
-        add_argument('Table', type=str). \
-        parse_args()
-    ids = args['Id']
-    file = args['File']
-    size = args['Size']
-    table_name = args['Table']
-    file_id = request.files.get('FileId', "")
-    if file_id:
-        ids = str(file_id.read().decode("utf-8")).strip().split(",")
-        ids = ids[:-1]
-    else:
-        ids = args['Id'].split(",")
-
-    time2 = time.time()
-    print("-------insert params time-------", time2-time1)
-    try:
-        index_client, conn, cursor = init_conn()
-        status, info = do_insert(index_client, conn, cursor, img_to_vec, ids, file, size, table_name)
-        time3 = time.time()
-        print("-------do insert time-------", time3-time2)
-        print("-------insert total time-------", time3-time1)
-        return "{0},{1}".format(status, info)
-    except Exception as e:
-        write_log(e, 1)
-        return "Error with {}".format(e), 400
-
-
-@app.route('/deleteImages', methods=['POST'])
-def do_delete_images_api():
-    args = reqparse.RequestParser(). \
-        add_argument('Table', type=str). \
-        add_argument('Id', type=str). \
-        parse_args()
-
-    table_name = args['Table']
-    file_id = request.files.get('FileId', "")
-
-    if file_id:
-        ids = str(file_id.read().decode("utf-8")).strip().split(",")
-        ids = ids[:-1]
-    else:
-        ids = args['Id'].split(",")
-
-    try:
-        index_client, conn, cursor = init_conn()
-        status, info = do_delete_images(index_client, conn, cursor, ids, table_name)
-        return "{0},{1}".format(status, info), 200
-    except Exception as e:
-        write_log(e, 1)
-        return "Error with {}".format(e), 400
-
-
-@app.route('/countImages', methods=['POST'])
+@app.route('/countTable', methods=['POST'])
 def do_count_images_api():
     args = reqparse.RequestParser(). \
         add_argument('Table', type=str). \
@@ -119,7 +60,7 @@ def do_delete_table_api():
         return "Error with {}".format(e), 400
 
 
-@app.route('/getSimilarImages', methods=['POST'])
+@app.route('/getSimilarUser', methods=['POST'])
 def do_search_images_api():
     time1 = time.time()
     args = reqparse.RequestParser(). \
@@ -127,22 +68,7 @@ def do_search_images_api():
         add_argument('Table', type=str). \
         parse_args()
 
-    file_id = request.files.get('FileId', "")
     table_name = args['Table']
-    file = request.files.get('File', "")
-    if file_id:
-        ids = str(file_id.read().decode("utf-8")).strip().split(",")
-        ids = ids[:-1]
-    else:
-        ids = args['Id'].split(",")
-
-    if file:
-        filename = secure_filename(file.filename)
-        file_path = os.path.join('/tmp/search_pic', filename)
-        file.save(file_path)
-
-    time2 = time.time()
-    print("-------search params time-------", time2-time1)
     try:
         index_client, conn, cursor = init_conn()
         result = do_search(index_client, conn, cursor, img_to_vec, [file_path], ids, table_name)
