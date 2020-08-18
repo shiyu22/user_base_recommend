@@ -4,7 +4,7 @@ from webserver.src.indexer.tools import connect_mysql, create_tables_mysql, load
 import time
 
 
-def init_table(index_client, conn, cursor, milvus_table=DEFAULT_TABLE, ids_table=IDS_TABLE, movies_table=MOVIES_TABLE):
+def init_table(index_client, conn, cursor, milvus_table=MILVUS_TABLE, ids_table=IDS_TABLE, movies_table=MOVIES_TABLE):
     status, ok = has_table(index_client, table_name)
     if not ok:
         print("create table.")
@@ -13,7 +13,7 @@ def init_table(index_client, conn, cursor, milvus_table=DEFAULT_TABLE, ids_table
         create_tables_mysql(conn, cursor, ids_table, movies_table)
 
 
-def insert_data(index_client, conn, cursor, dataset_path, movies_path, milvus_table=DEFAULT_TABLE, ids_table=IDS_TABLE, movies_table=MOVIES_TABLE):
+def insert_data(index_client, conn, cursor, dataset_path, movies_path, milvus_table=MILVUS_TABLE, ids_table=IDS_TABLE, movies_table=MOVIES_TABLE):
     vectors = np.load(dataset_path + '/h_item.npy')
     vectors = vectors.tolist()
     ids = [i for i in range(len(vectors))]

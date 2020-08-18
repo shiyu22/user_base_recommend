@@ -94,6 +94,7 @@ with open(output_path + '/mov_id.csv','w') as f:
     for i in range(len(mov_id)):
         line = str(i) + "," + str(mov_id[i]) + '\n'
         f.write(line)
+    print("writing mov_id.csv")
 
 # Build graph
 graph_builder = PandasGraphBuilder()
@@ -158,3 +159,4 @@ dataset = {
 
 with open(output_path + '/data.pkl', 'wb') as f:
     pickle.dump(dataset, f)
+    print("writing data.pkl")
