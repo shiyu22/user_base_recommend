@@ -1,5 +1,5 @@
 import logging as log
-from common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE
+from common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE, OUT_PATH
 from indexer.index import milvus_client, search_vectors, get_vector_by_ids
 from indexer.tools import connect_mysql, search_by_milvus_ids
 import numpy as np
@@ -30,7 +30,7 @@ def get_latest_item(search_id):
 
 def do_search(index_client, conn, cursor, search_id, table_name):
     if not table_name:
-        table_name = DEFAULT_TABLE
+        table_name = MILVUS_TABLE
     latest_item = get_latest_item(search_id)
     print("-----latest_items-----", latest_item)
 
