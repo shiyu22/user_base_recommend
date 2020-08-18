@@ -1,6 +1,6 @@
-from webserver.src.common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE
-from webserver.src.indexer.index import milvus_client, insert_vectors
-from webserver.src.indexer.tools import connect_mysql, create_tables_mysql, load_ids_to_mysql, load_movies_to_mysql, join_movies_ids_mysql
+from common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE
+from indexer.index import milvus_client, insert_vectors
+from indexer.tools import connect_mysql, create_tables_mysql, load_ids_to_mysql, load_movies_to_mysql, join_movies_ids_mysql
 import time
 
 
