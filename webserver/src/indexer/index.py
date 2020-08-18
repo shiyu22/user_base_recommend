@@ -10,7 +10,7 @@ def milvus_client():
         return milvus
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def create_table(client, table_name=None, dimension=VECTOR_DIMENSION,
@@ -26,19 +26,19 @@ def create_table(client, table_name=None, dimension=VECTOR_DIMENSION,
         return status
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def insert_vectors(client, table_name, vectors, ids):
     if not client.has_collection(collection_name=table_name):
-        log.error("collection %s not exist", table_name)
+        logging.error("collection %s not exist", table_name)
         return
     try:
         status, ids = client.insert(collection_name=table_name, records=vectors, ids=ids)
         return status, ids
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def create_index(client, table_name):
@@ -49,7 +49,7 @@ def create_index(client, table_name):
         return status
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def delete_collection(client, table_name):
@@ -59,7 +59,7 @@ def delete_collection(client, table_name):
         return status
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def search_vectors(client, table_name, vectors, top_k=TOP_K):
@@ -69,7 +69,7 @@ def search_vectors(client, table_name, vectors, top_k=TOP_K):
         return status, res
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def has_table(client, table_name):
@@ -78,7 +78,7 @@ def has_table(client, table_name):
         return status
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def count_collection(client, table_name):
@@ -87,7 +87,7 @@ def count_collection(client, table_name):
         return num
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def delete_vectors(client, table_name, ids):
@@ -96,7 +96,7 @@ def delete_vectors(client, table_name, ids):
         return status
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def get_vector_by_ids(client, table_name, ids):
@@ -105,4 +105,4 @@ def get_vector_by_ids(client, table_name, ids):
         return status, vector
     except Exception as e:
         print("Milvus ERROR:", e)
-        logging.ERROR(e)
+        logging.error(e)

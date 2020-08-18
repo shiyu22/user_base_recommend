@@ -10,20 +10,22 @@ def connect_mysql():
         return conn
     except Exception as e:
         print("MYSQL ERROR: connect failed")
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def create_tables_mysql(conn,cursor, ids_table, movies_table):
     ids_sql = "create table if not exists " + ids_table + "(milvus_id int, movies_id int);"
     movies_sql = "create table if not exists " + movies_table + "(movies_id int, movies_title varchar(100), genre varchar(100));"
-    sqls = [ids_table, movies_sql]
+    sqls = [ids_sql, movies_sql]
     try:
+        print("----sqls:", sqls)
         for sql in sqls:
             cursor.execute(sql)
+            conn.commit()
             print("------sql:", sql)
     except Exception as e:
-        print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+        print("MYSQL ERROR:", sqls)
+        logging.error(e)
 
 
 def load_ids_to_mysql(conn, cursor, table_name, file_name):
@@ -34,7 +36,7 @@ def load_ids_to_mysql(conn, cursor, table_name, file_name):
         print("MYSQL load ids table.")
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def load_movies_to_mysql(conn, cursor, table_name, file_name):
@@ -48,8 +50,9 @@ def load_movies_to_mysql(conn, cursor, table_name, file_name):
         logging.ERROR(e)
 
 
-def join_movies_ids_mysql(milvus_table, ids_table, movies_table):
-    sql = "create table " + milvus_table + "(select ids_table.milvus_id as milvus_id, movies_table.* from " + ids_table + "," + movies_table +" where " + ids_table + ".movies_id=" + movies_table + ".movies_id;"
+def join_movies_ids_mysql(conn, cursor, milvus_table, ids_table, movies_table):
+    sql = "create table " + milvus_table + "(select " + ids_table + ".milvus_id as milvus_id, " + movies_table + ".* from " + ids_table + "," + movies_table +" where " + ids_table + ".movies_id=" + movies_table + ".movies_id);"
+    print("---join", sql)
     try:
         cursor.execute(sql)
         conn.commit()
@@ -71,7 +74,7 @@ def search_by_milvus_ids(conn, cursor, movies_table, ids):
         return results
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def delete_data(conn, cursor, image_id, table_name):
@@ -84,7 +87,7 @@ def delete_data(conn, cursor, image_id, table_name):
         print("MYSQL delete data.")
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def delete_table(conn, cursor, table_name):
@@ -94,7 +97,7 @@ def delete_table(conn, cursor, table_name):
         print("MYSQL delete table.")
     except:
         print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+        logging.error(e)
 
 
 def count_table(conn, cursor, table_name):
@@ -106,4 +109,4 @@ def count_table(conn, cursor, table_name):
         return results[0][0]
     except Exception as e:
         print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+        logging.error(e)

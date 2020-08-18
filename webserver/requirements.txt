@@ -1,11 +1,6 @@
-flask-cors
 numpy==1.16.5
-Pillow==6.2.1
 pymilvus==0.2.14
-flask
-flask_restful
-gunicorn==20.0.0
-futures==3.1.1
-Keras==2.3.1
-tensorflow==1.14.0
+dgl
 pymysql
+fastapi
+uvicorn

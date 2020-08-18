@@ -51,6 +51,9 @@ You can see the **h_item.npy** under **output**.
 You should to change the Milvus host and port.
 
 ```bash
-$ python insert_milvus.py ./output ./ml-m1
+$ python insert_milvus.py ./pinsage/output ./pinsage/ml-m1
 ```
 
+
+
+## Run webserver

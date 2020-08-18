@@ -1,15 +1,17 @@
 from common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE
-from indexer.index import milvus_client, insert_vectors
+from indexer.index import milvus_client, has_table, insert_vectors, create_table, create_index
 from indexer.tools import connect_mysql, create_tables_mysql, load_ids_to_mysql, load_movies_to_mysql, join_movies_ids_mysql
 import time
+import argparse
+import numpy as np
 
 
 def init_table(index_client, conn, cursor, milvus_table=MILVUS_TABLE, ids_table=IDS_TABLE, movies_table=MOVIES_TABLE):
-    status, ok = has_table(index_client, table_name)
+    status, ok = has_table(index_client, milvus_table)
     if not ok:
         print("create table.")
-        create_table(index_client, table_name)
-        create_index(index_client, table_name)
+        create_table(index_client, milvus_table)
+        create_index(index_client, milvus_table)
         create_tables_mysql(conn, cursor, ids_table, movies_table)
 
 
@@ -39,8 +41,8 @@ def main():
     index_client = milvus_client()
     conn = connect_mysql()
     cursor = conn.cursor()
-    init_table(index_client, conn, cursor, table_name)
-    insert_data(index_client, conn, cursor, table_name, args.dataset_path, args.movies_path)
+    init_table(index_client, conn, cursor)
+    insert_data(index_client, conn, cursor, args.dataset_path, args.movies_path)
 
 
 if __name__ == '__main__':

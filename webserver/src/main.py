@@ -7,6 +7,7 @@ from indexer.index import milvus_client
 from indexer.tools import connect_mysql
 import time
 from fastapi import FastAPI
+import uvicorn
 
 app = FastAPI()
 
@@ -24,7 +25,7 @@ async def do_count_images_api(table_name: str=None):
         rows_milvus, rows_mysql = do_count(index_client, conn, cursor, table_name)
         return "{0},{1}".format(rows_milvus, rows_mysql), 200
     except Exception as e:
-        logging.ERROR(e)
+        logging.error(e)
         return "Error with {}".format(e), 400
 
 
@@ -36,7 +37,7 @@ async def do_delete_table_api(table_name: str=None):
         status = do_delete_table(index_client, conn, cursor, table_name)
         return "{}".format(status)
     except Exception as e:
-        logging.ERROR(e)
+        logging.error(e)
         return "Error with {}".format(e), 400
 
 
@@ -49,7 +50,7 @@ def do_search_images_api(id: int, table_name: str=None):
         return "{0}".format(results), 200
 
     except Exception as e:
-        logging.ERROR(e)
+        logging.error(e)
         return "Error with {}".format(e), 400
 
 
