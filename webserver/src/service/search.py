@@ -20,8 +20,8 @@ def get_latest_item(search_id):
     user_to_item_etype = dataset['user-to-item-type']
     timestamp = dataset['timestamp-edge-column']
 
-    graph_slice = g.edge_type_subgraph([self.user_to_item_etype])
-    latest_interactions = dgl.sampling.select_topk(graph_slice, 1, self.timestamp, edge_dir='out')
+    graph_slice = g.edge_type_subgraph([user_to_item_etype])
+    latest_interactions = dgl.sampling.select_topk(graph_slice, 1, timestamp, edge_dir='out')
     user, latest_items = latest_interactions.all_edges(form='uv', order='srcdst')
 
     latest_item = latest_items[[search_id]].to(device=h_item.device)
