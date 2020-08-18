@@ -6,7 +6,6 @@ import numpy as np
 import torch
 import pickle
 import dgl
-import argparse
 
 
 def get_latest_item(search_id):

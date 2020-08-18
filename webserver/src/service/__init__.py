@@ -1,9 +1,9 @@
-from indexer.logs import write_log
+# from indexer.logs import write_log
 
-write_log("Start app service.")
+# write_log("Start app service.")
 
-# import logging
-# logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+import logging
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 
 # import tensorflow as tf

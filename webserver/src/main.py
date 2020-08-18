@@ -1,6 +1,5 @@
 import os
 import logging
-from service.insert import do_insert
 from service.search import do_search
 from service.count import do_count
 from service.delete import do_delete_table
