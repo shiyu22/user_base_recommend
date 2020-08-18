@@ -24,7 +24,7 @@ def get_latest_item(search_id):
     latest_interactions = dgl.sampling.select_topk(graph_slice, 1, timestamp, edge_dir='out')
     user, latest_items = latest_interactions.all_edges(form='uv', order='srcdst')
 
-    latest_item = latest_items[[search_id]].to(device=h_item.device)
+    latest_item = latest_items[[search_id]].to()
     return latest_item.numpy().tolist()[0]
 
 
@@ -34,7 +34,7 @@ def do_search(index_client, conn, cursor, search_id, table_name):
     latest_item = get_latest_item(search_id)
     print("-----latest_items-----", latest_item)
 
-    _, vector_item = get_vector_by_ids(index_client, table_name, latest_item)
+    _, vector_item = get_vector_by_ids(index_client, table_name, [latest_item])
     status, results = search_vectors(index_client, table_name, vector_item)
 
     print("-----milvus search status------", status)

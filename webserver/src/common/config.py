@@ -10,7 +10,7 @@ TOP_K = os.getenv("TOP_K", 100)
 MILVUS_TABLE = os.getenv("MILVUS_TABLE", "milvus_user_base_recommend")
 IDS_TABLE = os.getenv("IDS_TABLE", "movies_ids")
 MOVIES_TABLE = os.getenv("MOVIES_TABLE", "movies")
-OUT_PATH = os.getenv("MOVIES_TABLE", "../pinsage/output/data.pkl")
+OUT_PATH = os.getenv("MOVIES_TABLE", "./pinsage/output/data.pkl")
 
 MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
 MYSQL_PORT = os.getenv("MYSQL_PORT", 3306)
