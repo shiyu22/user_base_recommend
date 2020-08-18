@@ -57,3 +57,13 @@ $ python insert_milvus.py ./pinsage/output ./pinsage/ml-m1
 
 
 ## Run webserver
+
+```bash
+$ python main.py
+Using backend: pytorch
+INFO:     Started server process [2415]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+```
+

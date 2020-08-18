@@ -42,10 +42,10 @@ async def do_delete_table_api(table_name: str=None):
 
 
 @app.post('/getSimilarUser')
-def do_search_images_api(id: int, table_name: str=None):
+def do_search_images_api(search_id: int, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
-        results = do_search(index_client, conn, cursor, search_id)
+        results = do_search(index_client, conn, cursor, search_id, table_name)
 
         return "{0}".format(results), 200
 

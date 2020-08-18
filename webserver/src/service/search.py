@@ -28,7 +28,7 @@ def get_latest_item(search_id):
     return latest_item.numpy().tolist()[0]
 
 
-def do_search(index_client, conn, cursor, search_id):
+def do_search(index_client, conn, cursor, search_id, table_name):
     if not table_name:
         table_name = DEFAULT_TABLE
     latest_item = get_latest_item(search_id)
