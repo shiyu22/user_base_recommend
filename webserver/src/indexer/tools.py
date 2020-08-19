@@ -69,7 +69,7 @@ def search_by_milvus_ids(conn, cursor, movies_table, ids):
     try:
         cursor.execute(sql)
         results = cursor.fetchall()
-        results = [res[0] for res in results]
+        # results = [res[0] for res in results]
         print("MYSQL search by milvus id.")
         return results
     except Exception as e:

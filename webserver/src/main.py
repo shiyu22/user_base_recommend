@@ -46,8 +46,16 @@ def do_search_images_api(search_id: int, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
         results = do_search(index_client, conn, cursor, search_id, table_name)
-
-        return "{0}".format(results), 200
+        recommends = []
+        for re in results:
+            recommend = {
+                "num" : re[0],
+                "movie_id" : re[1],
+                "title" : re[2],
+                "genre" : re[3]
+            }
+            recommends.append(recommend)
+        return recommends, 200
 
     except Exception as e:
         logging.error(e)
