@@ -4,3 +4,7 @@ dgl
 pymysql
 fastapi
 uvicorn
+torch
+torchvision
+pandas
+torchtext

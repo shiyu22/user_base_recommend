@@ -13,18 +13,13 @@ def connect_mysql():
         logging.error(e)
 
 
-def create_tables_mysql(conn,cursor, ids_table, movies_table):
-    ids_sql = "create table if not exists " + ids_table + "(milvus_id int, movies_id int);"
-    movies_sql = "create table if not exists " + movies_table + "(movies_id int, movies_title varchar(100), genre varchar(100));"
-    sqls = [ids_sql, movies_sql]
+def create_table_mysql(conn,cursor, table_name):
+    sql = "create table if not exists " + table_name + "(milvus_id int, movies_id int, info text, index recommend_milvus(milvus_id));"
     try:
-        print("----sqls:", sqls)
-        for sql in sqls:
-            cursor.execute(sql)
-            conn.commit()
-            print("------sql:", sql)
+        cursor.execute(sql)
+        conn.commit()
     except Exception as e:
-        print("MYSQL ERROR:", sqls)
+        print("MYSQL ERROR:", sql)
         logging.error(e)
 
 
@@ -50,16 +45,16 @@ def load_movies_to_mysql(conn, cursor, table_name, file_name):
         logging.ERROR(e)
 
 
-def join_movies_ids_mysql(conn, cursor, milvus_table, ids_table, movies_table):
-    sql = "create table " + milvus_table + "(select " + ids_table + ".milvus_id as milvus_id, " + movies_table + ".* from " + ids_table + "," + movies_table +" where " + ids_table + ".movies_id=" + movies_table + ".movies_id);"
-    print("---join", sql)
-    try:
-        cursor.execute(sql)
-        conn.commit()
-        print("MYSQL join table.")
-    except Exception as e:
-        print("MYSQL ERROR:", sql)
-        logging.ERROR(e)
+# def join_movies_ids_mysql(conn, cursor, milvus_table, ids_table, movies_table):
+#     sql = "create table " + milvus_table + "(select " + ids_table + ".milvus_id as milvus_id, " + movies_table + ".* from " + ids_table + "," + movies_table +" where " + ids_table + ".movies_id=" + movies_table + ".movies_id);"
+#     print("---join", sql)
+#     try:
+#         cursor.execute(sql)
+#         conn.commit()
+#         print("MYSQL join table.")
+#     except Exception as e:
+#         print("MYSQL ERROR:", sql)
+#         logging.ERROR(e)
 
 
 def search_by_milvus_ids(conn, cursor, movies_table, ids):

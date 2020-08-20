@@ -1,5 +1,5 @@
 import logging as log
-from common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE, OUT_PATH
+from common.config import MILVUS_TABLE, IDS_TABLE, MOVIES_TABLE, OUT_PATH, OUT_DATA
 from indexer.index import milvus_client, search_vectors, get_vector_by_ids
 from indexer.tools import connect_mysql, search_by_milvus_ids
 import numpy as np
@@ -9,7 +9,7 @@ import dgl
 
 
 def get_latest_item(search_id):
-    with open(OUT_PATH, 'rb') as f:
+    with open(OUT_DATA, 'rb') as f:
         dataset = pickle.load(f)
     g = dataset['train-graph']
     val_matrix = dataset['val-matrix'].tocsr()
@@ -31,13 +31,10 @@ def get_latest_item(search_id):
 def do_search(index_client, conn, cursor, search_id, table_name):
     if not table_name:
         table_name = MILVUS_TABLE
-    latest_item = get_latest_item(search_id)
-    print("-----latest_items-----", latest_item)
 
-    _, vector_item = get_vector_by_ids(index_client, table_name, [latest_item])
+    _, vector_item = get_vector_by_ids(index_client, table_name, search_id)
     status, results = search_vectors(index_client, table_name, vector_item)
-
     print("-----milvus search status------", status)
-    results = search_by_milvus_ids(conn, cursor, table_name, results.id_array[0])
 
-    return results
+    # results = get_info_by_ids(results_id)
+    return results.id_array
