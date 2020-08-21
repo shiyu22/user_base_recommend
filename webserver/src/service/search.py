@@ -11,7 +11,7 @@ import dgl
 def get_posters_by_ids(host, ids):
     imgs = []
     for i in ids:
-        img = "http://"+ str(host) + "/getImage" + str(i)
+        img = "http://"+ str(host) + "/getImage?img=" + str(i)
         imgs.append(img)
     return imgs
 
@@ -30,6 +30,6 @@ def do_search(index_client, conn, cursor, host, search_id, table_name):
         info = search_by_milvus_ids(conn, cursor, table_name, results_id)
         poster = get_posters_by_ids(host, results_id)
         infos.append(info)
-        posters.apped(poster)
+        posters.append(poster)
 
     return infos, posters

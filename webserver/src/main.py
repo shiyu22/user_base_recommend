@@ -44,7 +44,7 @@ async def do_delete_table_api(table_name: str=None):
         return "Error with {}".format(e), 400
 
 
-@app.get('/getImage/<img>')
+@app.get('/getImage')
 def image_endpoint(img: str):
     try:
         img_path = OUT_PATH + '/' + img + '.jpg'
