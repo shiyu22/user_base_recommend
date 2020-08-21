@@ -10,6 +10,7 @@ import time
 from fastapi import FastAPI
 import uvicorn
 from starlette.responses import FileResponse
+from starlette.requests import Request
 
 app = FastAPI()
 
@@ -43,17 +44,22 @@ async def do_delete_table_api(table_name: str=None):
         return "Error with {}".format(e), 400
 
 
-@app.get('/getImage')
+@app.get('/getImage/<img>')
 def image_endpoint(img: str):
-    img_path = OUT_PATH + '/' + img + '.jpg'
-    return FileResponse(img_path)
+    try:
+        img_path = OUT_PATH + '/' + img + '.jpg'
+        return FileResponse(img_path), 200
+    except Exception as e:
+        logging.error(e)
+        return None, 200
 
 
 @app.post('/getSimilarUser')
-def do_search_images_api(search_id: list, table_name: str=None):
+def do_search_images_api(request:Request, search_id: list, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
-        results = do_search(index_client, conn, cursor, search_id, table_name)
+        host = request.headers['host']
+        results = do_search(index_client, conn, cursor, host, search_id, table_name)
         return results, 200
 
     except Exception as e:

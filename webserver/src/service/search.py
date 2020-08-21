@@ -8,27 +8,15 @@ import pickle
 import dgl
 
 
-def get_latest_item(search_id):
-    with open(OUT_DATA, 'rb') as f:
-        dataset = pickle.load(f)
-    g = dataset['train-graph']
-    val_matrix = dataset['val-matrix'].tocsr()
-    test_matrix = dataset['test-matrix'].tocsr()
-    item_texts = dataset['item-texts']
-    user_ntype = dataset['user-type']
-    item_ntype = dataset['item-type']
-    user_to_item_etype = dataset['user-to-item-type']
-    timestamp = dataset['timestamp-edge-column']
-
-    graph_slice = g.edge_type_subgraph([user_to_item_etype])
-    latest_interactions = dgl.sampling.select_topk(graph_slice, 1, timestamp, edge_dir='out')
-    user, latest_items = latest_interactions.all_edges(form='uv', order='srcdst')
-
-    latest_item = latest_items[[search_id]].to()
-    return latest_item.numpy().tolist()[0]
+def get_posters_by_ids(host, ids):
+    imgs = []
+    for i in ids:
+        img = "http://"+ str(host) + "/getImage" + str(i)
+        imgs.append(img)
+    return imgs
 
 
-def do_search(index_client, conn, cursor, search_id, table_name):
+def do_search(index_client, conn, cursor, host, search_id, table_name):
     if not table_name:
         table_name = MILVUS_TABLE
 
@@ -36,5 +24,12 @@ def do_search(index_client, conn, cursor, search_id, table_name):
     status, results = search_vectors(index_client, table_name, vector_item)
     print("-----milvus search status------", status)
 
-    # results = get_info_by_ids(results_id)
-    return results.id_array
+    infos = []
+    posters = []
+    for results_id in results.id_array:
+        info = search_by_milvus_ids(conn, cursor, table_name, results_id)
+        poster = get_posters_by_ids(host, results_id)
+        infos.append(info)
+        posters.apped(poster)
+
+    return infos, posters
