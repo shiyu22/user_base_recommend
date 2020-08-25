@@ -34,7 +34,7 @@ def get_ids_info(conn, cursor, table_name, host, ids):
         info = json.loads(info.replace('\r\n', '').replace("\\", ""))
     except:
         info = json.loads(info.replace('\r\n', '').replace("\\\"", "").replace("\\", ""))
-    img = "http://"+ str(host) + "/getImage?img=" + str(ids)
+    img = "http://"+ str(host) + "/getImage?img=" + str(ids+1)
     print("============", info, img)
     return info, img
 
@@ -49,7 +49,7 @@ def do_search(index_client, conn, cursor, img_list, search_id, table_name):
 
     results_ids = []
     for results_id in results.id_array:
-        for i in results_id:
+        for i in results_id and i not in search_id:
             img = str(i) +'.jpg'
             if img in img_list:
                 results_ids.append(img)
