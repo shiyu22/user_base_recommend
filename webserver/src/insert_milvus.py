@@ -15,7 +15,7 @@ def init_table(index_client, conn, cursor, milvus_table=MILVUS_TABLE):
         create_table_mysql(conn, cursor, milvus_table)
 
 
-def insert_data(index_client, conn, cursor, dataset_path, movies_path, milvus_table=MILVUS_TABLE):
+def insert_data(index_client, conn, cursor, dataset_path, milvus_table=MILVUS_TABLE):
     vectors = np.load(dataset_path + '/h_item.npy')
     vectors = vectors.tolist()
     ids = [i for i in range(len(vectors))]
@@ -23,20 +23,19 @@ def insert_data(index_client, conn, cursor, dataset_path, movies_path, milvus_ta
     print("milvus insert status:", status)
 
     print("load data to mysql:")
-    load_movies_to_mysql(conn, cursor, milvus_table, movies_path+'/movies_id.dat')
+    load_movies_to_mysql(conn, cursor, milvus_table, dataset_path+'/movies_id.dat')
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('dataset_path', type=str)
-    parser.add_argument('movies_path', type=str)
     args = parser.parse_args()
 
     index_client = milvus_client()
     conn = connect_mysql()
     cursor = conn.cursor()
     init_table(index_client, conn, cursor)
-    insert_data(index_client, conn, cursor, args.dataset_path, args.movies_path)
+    insert_data(index_client, conn, cursor, args.dataset_path)
 
 
 if __name__ == '__main__':
