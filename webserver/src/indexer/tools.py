@@ -46,7 +46,7 @@ def load_movies_to_mysql(conn, cursor, table_name, file_name):
 
 
 def search_by_milvus_id(conn, cursor, movies_table, ids):
-    sql = "select * from " + movies_table + " where milvus_id=" + str_ids + ";"
+    sql = "select * from " + movies_table + " where milvus_id=" + ids + ";"
     try:
         cursor.execute(sql)
         results = cursor.fetchall()

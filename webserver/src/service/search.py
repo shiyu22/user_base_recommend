@@ -28,6 +28,7 @@ def get_ids_info(conn, cursor, table_name, host, ids):
     if not table_name:
         table_name = MILVUS_TABLE
     info = search_by_milvus_id(conn, cursor, table_name, ids)
+    print("===========", info)
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
     return info, img
 
