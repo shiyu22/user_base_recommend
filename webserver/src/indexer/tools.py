@@ -45,28 +45,13 @@ def load_movies_to_mysql(conn, cursor, table_name, file_name):
         logging.ERROR(e)
 
 
-# def join_movies_ids_mysql(conn, cursor, milvus_table, ids_table, movies_table):
-#     sql = "create table " + milvus_table + "(select " + ids_table + ".milvus_id as milvus_id, " + movies_table + ".* from " + ids_table + "," + movies_table +" where " + ids_table + ".movies_id=" + movies_table + ".movies_id);"
-#     print("---join", sql)
-#     try:
-#         cursor.execute(sql)
-#         conn.commit()
-#         print("MYSQL join table.")
-#     except Exception as e:
-#         print("MYSQL ERROR:", sql)
-#         logging.ERROR(e)
-
-
-def search_by_milvus_ids(conn, cursor, movies_table, ids):
-    str_ids = str(ids)
-    str_ids = str(str_ids).replace('[','').replace(']','')
-    sql = "select * from " + movies_table + " where milvus_id in (" + str_ids + ") order by field (milvus_id," + str_ids + ");"
+def search_by_milvus_id(conn, cursor, movies_table, ids):
+    sql = "select * from " + movies_table + " where milvus_id=" + str_ids + ";"
     try:
         cursor.execute(sql)
         results = cursor.fetchall()
-        # results = [res[0] for res in results]
         print("MYSQL search by milvus id.")
-        return results
+        return results[0]
     except Exception as e:
         print("MYSQL ERROR:", sql)
         logging.error(e)

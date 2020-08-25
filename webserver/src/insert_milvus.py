@@ -12,7 +12,7 @@ def init_table(index_client, conn, cursor, milvus_table=MILVUS_TABLE):
         print("create table.")
         create_table(index_client, milvus_table)
         create_index(index_client, milvus_table)
-        create_table_mysql(conn, cursor, ids_table, movies_table)
+        create_table_mysql(conn, cursor, milvus_table)
 
 
 def insert_data(index_client, conn, cursor, dataset_path, movies_path, milvus_table=MILVUS_TABLE):

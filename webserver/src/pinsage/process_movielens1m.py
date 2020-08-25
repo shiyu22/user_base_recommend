@@ -90,11 +90,17 @@ movies_categorical = movies.drop('title', axis=1)
 
 # Get the relationship between movie_id and order num
 mov_id = movies_categorical['movie_id'].values
-with open(output_path + '/mov_id.csv','w') as f:
-    for i in range(len(mov_id)):
-        line = str(i) + "," + str(mov_id[i]) + '\n'
-        f.write(line)
-    print("writing mov_id.csv")
+with open('../movie_info.dat','r') as f_r:
+    with open(output_path + '/movie_id.dat','w') as f_w:
+        info = {}
+        for line in f_r.readlines():
+            line.split("::")
+            info[line[0]] = line[1]
+        for i in range(len(mov_id)):
+            line = str(i) + "::" + str(info[mov_id[i]]) + '\n'
+            f_w.write(line)
+        print("writing mov_id.csv")
+
 
 # Build graph
 graph_builder = PandasGraphBuilder()

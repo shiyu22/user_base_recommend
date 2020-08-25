@@ -14,13 +14,13 @@
 
 The data source is [MovieLens million-scale dataset (ml-1m)](http://files.grouplens.org/datasets/movielens/ml-1m.zip), created by GroupLens Research. Refer to [ml-1m-README](http://files.grouplens.org/datasets/movielens/ml-1m-README.txt) for more information.
 
-1. Clone the project
+1. Clone the code.
 
    ```bash
    $ git clone https://github.com/milvus-io/bootcamp.git
    ```
    
-2. Downland and extract the MovieLens-1M dataset
+2. Downland and extract the MovieLens-1M dataset.
 
    ```bash
    # Make sure you are in the pinsage folder
@@ -29,7 +29,7 @@ The data source is [MovieLens million-scale dataset (ml-1m)](http://files.groupl
    $ unzip ml-1m.zip
    ```
 
-3. Processing data as a pickle file
+3. Processing data as a pickle file.
 
    ```bash
    # Install the requirements
@@ -38,7 +38,7 @@ The data source is [MovieLens million-scale dataset (ml-1m)](http://files.groupl
    $ python process_movielens1m.py ./ml-1m ./output
    ```
 
-   You can see that two files are generated in the **output** directory: **data.pkl** and **mov_id.csv**.
+   You can see that two files in the **output** directory: **data.pkl** and **mov_id.csv**.
 
 
 
@@ -58,18 +58,18 @@ It will generate the **h_item.npy** file in the **output** directory.
 
 Before running the script, please modify the parameters in **webserver/src/common/config.py**:
 
-| Parameter     | Description               | Default setting |
-| ------------- | ------------------------- | --------------- |
-| MILVUS_HOST   | milvus service ip address | 127.0.0.1       |
-| MILVUS_PORT   | milvus service port       | 19530           |
-| PG_HOST       | postgresql service ip     | 127.0.0.1       |
-| PG_PORT       | postgresql service port   | 5432            |
-| PG_USER       | postgresql user name      | postgres        |
-| PG_PASSWORD   | postgresql password       | postgres        |
-| PG_DATABASE   | postgresql datebase name  | postgres        |
-| DEFAULT_TABLE | default table name        | milvus_qa       |
+| Parameter    | Description               | Default setting  |
+| ------------ | ------------------------- | ---------------- |
+| MILVUS_HOST  | milvus service ip address | 127.0.0.1        |
+| MILVUS_PORT  | milvus service port       | 19530            |
+| MYSQL_HOST   | postgresql service ip     | 127.0.0.1        |
+| MYSQL_PORT   | postgresql service port   | 3306             |
+| MYSQL_USER   | postgresql user name      | root             |
+| MYSQL_PWD    | postgresql password       | 123456           |
+| MYSQL_DB     | postgresql datebase name  | mysql            |
+| MILVUS_TABLE | default table name        | milvus_recommend |
 
-Please modify the parameters of Mysql and Milvus according to your environment, then run the script:
+Please modify the parameters of Milvus and MySQL based on your environment, then run the script:
 
 ```bash
 # Make sure you are in the src folder
@@ -77,23 +77,32 @@ $ cd ..
 $ python insert_milvus.py ./pinsage/output ./pinsage/ml-m1
 ```
 
-> If you insert date failed, please delete the table you have inserted to Milvus and Mysql, and update the file [./pinsage/ml-m1/movies.dat]().
-
 
 
 ## Run webserver
 
-```bash
-$ python main.py
-# You are expected to see the following output.
-Using backend: pytorch
-INFO:     Started server process [2415]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-```
+1. Download and extract  the movies_poster file.
+
+   ```bash
+   $ wget 
+   $ unzip movies_poster.zip
+   ```
+
+2. Start recommend service.
+
+    ```bash
+    $ python main.py
+    # You are expected to see the following output.
+    Using backend: pytorch
+    INFO:     Started server process [2415]
+    INFO:     Waiting for application startup.
+    INFO:     Application startup complete.
+    INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+    ```
+
 
 
 
 ## Run webclient
+
 
