@@ -19,6 +19,7 @@ def get_list_info(conn, cursor, table_name, host, list_ids):
         ids = ids[:-4]
         info, img = get_ids_info(conn, cursor, table_name, host, ids)
         info = json.loads(info)
+        print(info)
         title = info["Title"]
         year = info["Year"]
         list_info[ids] = [title, year, img]
@@ -29,8 +30,9 @@ def get_ids_info(conn, cursor, table_name, host, ids):
     if not table_name:
         table_name = MILVUS_TABLE
     info = search_by_milvus_id(conn, cursor, table_name, ids)
-    print("===========", info)
+    # print("===========", info)
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
+    print("============", img)
     return info[1], img
 
 
