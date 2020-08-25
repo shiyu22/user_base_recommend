@@ -73,7 +73,7 @@ def update_info(movie_data, info_data):
 
 
 def get_posters(info_data):
-    with open(info_data.replace('movies_info.dat', 'movies_posters.sh'), 'a+') as f_w:
+    with open(info_data.replace('movie_id.dat', 'movies_posters.sh'), 'a+') as f_w:
         with open(info_data, 'r') as f_r:
             for line in f_r.readlines():
                 line = line.strip().split("::")
@@ -89,7 +89,7 @@ def get_posters(info_data):
 
                 poster = info["Poster"]
                 if not "N/A" in poster:
-                    line = "wget -c "+poster+' -O '+num+'.jpg\n'
+                    line = "wget -c "+ poster +' -O '+ num +'.jpg\n'
                     print(line)
                     f_w.write(line)
 

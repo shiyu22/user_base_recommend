@@ -28,7 +28,7 @@ def get_list_info(conn, cursor, table_name, host, list_ids):
 def get_ids_info(conn, cursor, table_name, host, ids):
     if not table_name:
         table_name = MILVUS_TABLE
-    info = search_by_milvus_id(conn, cursor, table_name, ids)
+    info = search_by_milvus_id(conn, cursor, table_name, str(ids))
     info = info[1]
     try:
         info = json.loads(info.replace('\r\n', '').replace("\\", ""))
@@ -49,9 +49,9 @@ def do_search(index_client, conn, cursor, img_list, search_id, table_name):
 
     results_ids = []
     for results_id in results.id_array:
-        for i in results_id and i not in search_id:
+        for i in results_id:
             img = str(i) +'.jpg'
-            if img in img_list:
+            if img in img_list and i not in search_id:
                 results_ids.append(img)
     print(results_ids)
     try:
