@@ -51,9 +51,10 @@ def do_search(index_client, conn, cursor, img_list, search_id, table_name):
     results_ids = []
     for results_id in results.id_array:
         for i in results_id:
-            img = i +'.jpg'
+            img = str(i) +'.jpg'
             if img in img_list:
                 results_ids.append(i)
+    print(results_ids)
     try:
         list_ids = random.sample(results_ids, 100)
     except:
