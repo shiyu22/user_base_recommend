@@ -10,7 +10,7 @@ import json
 import random
 
 
-def get_list_info(conn, cursor, table_name, host, list_id):
+def get_list_info(conn, cursor, table_name, host, list_ids):
     if not table_name:
         table_name = MILVUS_TABLE
     list_info = {}
