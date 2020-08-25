@@ -35,7 +35,7 @@ def get_ids_info(conn, cursor, table_name, host, ids):
     except:
         info = json.loads(info.replace('\r\n', '').replace("\\\"", "").replace("\\", ""))
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
-    print("============", info, img)
+    print("============", img)
     return info, img
 
 
@@ -53,7 +53,7 @@ def do_search(index_client, conn, cursor, img_list, search_id, table_name):
             img = str(i) +'.jpg'
             if img in img_list and i not in search_id:
                 results_ids.append(img)
-    print(results_ids)
+    # print(results_ids)
     try:
         list_ids = random.sample(results_ids, 100)
     except:
