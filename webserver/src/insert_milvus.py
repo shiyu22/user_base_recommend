@@ -23,7 +23,7 @@ def insert_data(index_client, conn, cursor, dataset_path, milvus_table=MILVUS_TA
     print("milvus insert status:", status)
 
     print("load data to mysql:")
-    load_movies_to_mysql(conn, cursor, milvus_table, dataset_path+'/movies_id.dat')
+    load_movies_to_mysql(conn, cursor, milvus_table, dataset_path+'/movie_id.dat')
 
 
 def main():

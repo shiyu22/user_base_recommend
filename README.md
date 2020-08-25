@@ -74,7 +74,7 @@ Please modify the parameters of Milvus and MySQL based on your environment, then
 ```bash
 # Make sure you are in the src folder
 $ cd ..
-$ python insert_milvus.py ./pinsage/output ./pinsage/ml-m1
+$ python insert_milvus.py ./pinsage/output
 ```
 
 
