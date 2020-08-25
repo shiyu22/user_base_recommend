@@ -34,7 +34,7 @@ def get_ids_info(conn, cursor, table_name, host, ids):
         info = json.loads(info.replace('\r\n', '').replace("\\", ""))
     except:
         info = json.loads(info.replace('\r\n', '').replace("\\\"", "").replace("\\", ""))
-    img = "http://"+ str(host) + "/getImage?img=" + str(ids+1)
+    img = "http://"+ str(host) + "/getImage?img=" + str(ids)
     print("============", info, img)
     return info, img
 

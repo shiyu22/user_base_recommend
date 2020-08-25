@@ -51,7 +51,7 @@ async def do_delete_table_api(table_name: str=None):
         return "Error with {}".format(e), 400
 
 
-@app.post('/getImage')
+@app.get('/getImage')
 def image_endpoint(img: int):
     try:
         img_path = OUT_PATH + '/' + str(img) + '.jpg'
@@ -77,7 +77,7 @@ def get_random_item(request: Request, table_name: str=None):
         return "Error with {}".format(e), 400
 
 
-@app.post('/getInfo')
+@app.get('/getInfo')
 def get_item_info(request: Request, ids: int, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
