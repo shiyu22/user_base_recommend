@@ -1,6 +1,6 @@
-# User-based Recommendation System with Milvus
+# Graph-based Recommendation System with Milvus
 
-
+This project uses graph convolutional neural networks to generate embeddings, and then uses Milvus retrieval to implement a recommendation system. It provides flask services and a front-end interface.
 
 ## Prerequisite
 
@@ -84,7 +84,7 @@ $ python insert_milvus.py ./pinsage/output ./pinsage/ml-m1
 1. Download and extract  the movies_poster file.
 
    ```bash
-   $ wget 
+   $ wget https://github.com/shiyu22/user_base_recommend/raw/master/webserver/src/movies_poster.zip
    $ unzip movies_poster.zip
    ```
 
@@ -99,7 +99,8 @@ $ python insert_milvus.py ./pinsage/output ./pinsage/ml-m1
     INFO:     Application startup complete.
     INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
     ```
-
+    
+    > You can get the API by typing http://127.0.0.1:8000/docs into your browser.
 
 
 

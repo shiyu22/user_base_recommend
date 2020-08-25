@@ -1,6 +1,6 @@
 numpy==1.16.5
 pymilvus==0.2.14
-dgl
+dgl==0.4.3.post2
 pymysql
 fastapi
 uvicorn

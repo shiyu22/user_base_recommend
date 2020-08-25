@@ -14,7 +14,7 @@ def connect_mysql():
 
 
 def create_table_mysql(conn,cursor, table_name):
-    sql = "create table if not exists " + table_name + "(milvus_id int, movies_id int, info text, index recommend_milvus(milvus_id));"
+    sql = "create table if not exists " + table_name + "(milvus_id int, info text);"
     try:
         cursor.execute(sql)
         conn.commit()
