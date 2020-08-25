@@ -53,7 +53,7 @@ def do_search(index_client, conn, cursor, img_list, search_id, table_name):
         for i in results_id:
             img = str(i) +'.jpg'
             if img in img_list:
-                results_ids.append(i)
+                results_ids.append(img)
     print(results_ids)
     try:
         list_ids = random.sample(results_ids, 100)

@@ -93,6 +93,7 @@ def get_item_info(request: Request, ids: str, table_name: str=None):
 def do_search_images_api(request: Request, search_id: list, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
+        host = request.headers['host']
         img_list = get_img_list()
         list_id = do_search(index_client, conn, cursor, img_list, search_id, table_name)
         print("--------", list_id)
