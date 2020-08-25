@@ -16,7 +16,7 @@ def get_list_info(conn, cursor, table_name, host, list_ids):
     list_info = {}
     list_img = []
     for ids in list_ids:
-        info, img = get_item_info(conn, cursor, table_name, host, ids)
+        info, img = get_ids_info(conn, cursor, table_name, host, ids)
         info = json.loads(info)
         title = info["Title"]
         year = info["Year"]
