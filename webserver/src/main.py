@@ -56,7 +56,7 @@ def image_endpoint(img: int):
     try:
         img_path = OUT_PATH + '/' + str(img) + '.jpg'
         print(img_path)
-        return FileResponse(img_path, media_type="image/jpg"), 200
+        return FileResponse(img_path, media_type="image/jpg")
     except Exception as e:
         logging.error(e)
         return None, 200
