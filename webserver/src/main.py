@@ -55,6 +55,7 @@ async def do_delete_table_api(table_name: str=None):
 def image_endpoint(img: str):
     try:
         img_path = OUT_PATH + '/' + img + '.jpg'
+        print(img_path)
         return FileResponse(img_path), 200
     except Exception as e:
         logging.error(e)
