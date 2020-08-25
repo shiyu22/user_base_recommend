@@ -32,7 +32,6 @@ def get_img_list():
 @app.get('/countTable')
 async def do_count_images_api(table_name: str=None):
     try:
-        table_name = args['Table']
         index_client, conn, cursor = init_conn()
         rows_milvus, rows_mysql = do_count(index_client, conn, cursor, table_name)
         return "{0},{1}".format(rows_milvus, rows_mysql), 200
@@ -44,7 +43,6 @@ async def do_count_images_api(table_name: str=None):
 @app.delete('/deleteTable')
 async def do_delete_table_api(table_name: str=None):
     try:
-        table_name = args['Table']
         index_client, conn, cursor = init_conn()
         status = do_delete_table(index_client, conn, cursor, table_name)
         return "{}".format(status)
