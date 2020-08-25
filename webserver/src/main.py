@@ -52,7 +52,7 @@ async def do_delete_table_api(table_name: str=None):
 
 
 @app.get('/getImage')
-def image_endpoint(img: str):
+def image_endpoint(img: int):
     try:
         img_path = OUT_PATH + '/' + img + '.jpg'
         print(img_path)
@@ -78,7 +78,7 @@ def get_random_item(request: Request, table_name: str=None):
 
 
 @app.post('/getInfo')
-def get_item_info(request: Request, ids: str, table_name: str=None):
+def get_item_info(request: Request, ids: int, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
         host = request.headers['host']

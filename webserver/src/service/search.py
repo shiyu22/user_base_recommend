@@ -18,7 +18,6 @@ def get_list_info(conn, cursor, table_name, host, list_ids):
     for ids in list_ids:
         ids = ids[:-4]
         info, img = get_ids_info(conn, cursor, table_name, host, ids)
-        
 
         title = info["Title"]
         year = info["Year"]
@@ -32,9 +31,9 @@ def get_ids_info(conn, cursor, table_name, host, ids):
     info = search_by_milvus_id(conn, cursor, table_name, ids)
     info = info[1]
     try:
-        info = json.loads(info.replace("\\", ""))
+        info = json.loads(info.replace('\r\n', '').replace("\\", ""))
     except:
-        info = json.loads(info.replace("\\\"", "").replace("\\", ""))
+        info = json.loads(info.replace('\r\n', '').replace("\\\"", "").replace("\\", ""))
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
     print("============", img)
     return info, img
