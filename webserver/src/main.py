@@ -68,6 +68,7 @@ def get_random_item(request: Request, table_name: str=None):
         img_list = get_img_list()
         list_id = random.sample(img_list, 16)
         host = request.headers['host']
+        print(list_id)
         info = get_list_info(conn, cursor, table_name, host, list_id)
         return info, 200
     except Exception as e:
