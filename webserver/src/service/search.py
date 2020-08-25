@@ -17,7 +17,7 @@ def get_list_info(conn, cursor, table_name, host, list_ids):
     list_img = []
     for ids in list_ids:
         ids = ids[:-4]
-        info, img = get_ids_info(conn, cursor, table_name, host, ids)
+        info, img = get_ids_info(conn, cursor, table_name, host, int(ids))
 
         title = info["Title"]
         year = info["Year"]
