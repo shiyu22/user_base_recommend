@@ -65,7 +65,7 @@ def image_endpoint(img: str):
 def get_random_item(request: Request, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
-        img_list = get_img_list(OUT_PATH)
+        img_list = get_img_list()
         list_id = random.sample(img_list, 16)
         host = request.headers['host']
         info = get_list_info(conn, cursor, table_name, host, list_id)
@@ -91,7 +91,7 @@ def get_item_info(request: Request, ids: str, table_name: str=None):
 def do_search_images_api(request: Request, search_id: list, table_name: str=None):
     try:
         index_client, conn, cursor = init_conn()
-        img_list = get_img_list(OUT_PATH)
+        img_list = get_img_list()
         list_id = do_search(index_client, conn, cursor, img_list, search_id, table_name)
         info = get_list_info(conn, cursor, table_name, host, list_id)
         return info, 200
