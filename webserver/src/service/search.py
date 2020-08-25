@@ -18,8 +18,11 @@ def get_list_info(conn, cursor, table_name, host, list_ids):
     for ids in list_ids:
         ids = ids[:-4]
         info, img = get_ids_info(conn, cursor, table_name, host, ids)
-        info = json.loads(info)
-        print(info)
+        try:
+            info = json.loads(info.replace("\\", ""))
+        except:
+            info = json.loads(info.replace("\\\"", "").replace("\\", ""))
+
         title = info["Title"]
         year = info["Year"]
         list_info[ids] = [title, year, img]
