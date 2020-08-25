@@ -31,7 +31,7 @@ def get_ids_info(conn, cursor, table_name, host, ids):
     info = search_by_milvus_id(conn, cursor, table_name, ids)
     print("===========", info)
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
-    return info, img
+    return info[1], img
 
 
 def do_search(index_client, conn, cursor, img_list, search_id, table_name):
