@@ -29,11 +29,7 @@ def get_ids_info(conn, cursor, table_name, host, ids):
     if not table_name:
         table_name = MILVUS_TABLE
     info = search_by_milvus_id(conn, cursor, table_name, str(ids))
-    info = info[1]
-    try:
-        info = json.loads(info.replace('\r\n', '').replace("\\", ""))
-    except:
-        info = json.loads(info.replace('\r\n', '').replace("\\\"", "").replace("\\", ""))
+    info = json.loads(info[1], strict=False)
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
     print("============", img)
     return info, img
