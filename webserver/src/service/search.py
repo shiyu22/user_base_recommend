@@ -10,14 +10,15 @@ import json
 import random
 
 
-def get_list_info(conn, cursor, table_name, host, list_id):
+def get_list_info(conn, cursor, table_name, host, list_ids):
     if not table_name:
         table_name = MILVUS_TABLE
     list_info = {}
     list_img = []
     for ids in list_ids:
-        info, img = get_item_info(conn, cursor, table_name, host, ids)
-        info = json.loads(info)
+        ids = ids[:-4]
+        info, img = get_ids_info(conn, cursor, table_name, host, int(ids))
+
         title = info["Title"]
         year = info["Year"]
         list_info[ids] = [title, year, img]
@@ -27,8 +28,10 @@ def get_list_info(conn, cursor, table_name, host, list_id):
 def get_ids_info(conn, cursor, table_name, host, ids):
     if not table_name:
         table_name = MILVUS_TABLE
-    info = search_by_milvus_id(conn, cursor, table_name, ids)
+    info = search_by_milvus_id(conn, cursor, table_name, str(ids))
+    info = json.loads(info[1], strict=False)
     img = "http://"+ str(host) + "/getImage?img=" + str(ids)
+    print("============", img)
     return info, img
 
 
@@ -43,9 +46,10 @@ def do_search(index_client, conn, cursor, img_list, search_id, table_name):
     results_ids = []
     for results_id in results.id_array:
         for i in results_id:
-            img = i +'.jpg'
-            if img in img_list:
-                results_ids.append(i)
+            img = str(i) +'.jpg'
+            if img in img_list and i not in search_id:
+                results_ids.append(img)
+    # print(results_ids)
     try:
         list_ids = random.sample(results_ids, 100)
     except:
